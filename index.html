@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Aplikasi pengelolaan nilai sekolah untuk guru dan siswa.">
+  <meta name="theme-color" content="#123b68">
+  <title>Ruang Nilai Sekolah</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark">RN</div><div><strong>Ruang Nilai</strong><small>Portal akademik sekolah</small></div></div>
+    <div class="top-actions"><span id="user-label" class="muted"></span><button id="logout-btn" class="btn btn-outline hidden">Keluar</button></div>
+  </header>
+
+  <main class="container">
+    <section id="setup-notice" class="notice hidden">
+      <strong>Konfigurasi belum lengkap.</strong>
+      <p>Isi URL dan publishable key Supabase pada <code>assets/config.js</code>. Lihat README.md untuk panduan.</p>
+    </section>
+
+    <section id="auth-view" class="auth-layout">
+      <div class="intro">
+        <span class="eyebrow">SISTEM INFORMASI AKADEMIK</span>
+        <h1>Kelola nilai dengan lebih tertib.</h1>
+        <p>Guru mengelola nilai sesuai penugasan. Siswa melihat hasil belajar melalui akun masing-masing.</p>
+        <div class="intro-points"><span>✓ Akses berbasis peran</span><span>✓ Data tersimpan online</span><span>✓ Ekspor CSV</span></div>
+      </div>
+      <form id="login-form" class="panel auth-card">
+        <h2>Masuk ke akun</h2>
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="username" required placeholder="nama@sekolah.sch.id">
+        <label for="password">Kata sandi</label>
+        <input id="password" type="password" autocomplete="current-password" required placeholder="Kata sandi">
+        <button class="btn btn-primary full" type="submit">Masuk</button>
+        <p id="auth-message" class="form-message" aria-live="polite"></p>
+        <p class="hint">Akun dibuat oleh admin sekolah. Pendaftaran publik tidak diaktifkan dari halaman ini.</p>
+      </form>
+    </section>
+
+    <section id="app-view" class="hidden">
+      <div class="welcome-row"><div><span class="eyebrow">DASHBOARD</span><h1 id="welcome-title">Selamat datang</h1><p id="welcome-subtitle" class="muted"></p></div><span id="role-pill" class="role-pill"></span></div>
+      <div id="stats" class="stats-grid"></div>
+
+      <section id="teacher-panel" class="panel hidden">
+        <div class="section-heading"><div><h2>Input nilai</h2><p>Nilai hanya dapat dimasukkan untuk kelas dan mata pelajaran yang ditugaskan kepada akun Anda.</p></div><button id="export-btn" class="btn btn-outline">Ekspor CSV</button></div>
+        <form id="grade-form" class="grade-form">
+          <div class="field"><label for="class-select">Kelas</label><select id="class-select" required><option value="">Pilih kelas</option></select></div>
+          <div class="field"><label for="subject-select">Mata pelajaran</label><select id="subject-select" required><option value="">Pilih mapel</option></select></div>
+          <div class="field"><label for="assessment">Jenis penilaian</label><input id="assessment" required maxlength="80" placeholder="Contoh: PH 1"></div>
+          <div class="field"><label for="term">Semester</label><select id="term"><option value="Ganjil">Ganjil</option><option value="Genap">Genap</option></select></div>
+          <div class="field"><label for="school-year">Tahun ajaran</label><input id="school-year" required value="2026/2027" maxlength="9"></div>
+          <div class="field"><label for="student-select">Siswa</label><select id="student-select" required><option value="">Pilih siswa</option></select></div>
+          <div class="field"><label for="score">Nilai (0–100)</label><input id="score" type="number" min="0" max="100" step="0.01" required placeholder="85"></div>
+          <div class="field"><label for="notes">Catatan (opsional)</label><input id="notes" maxlength="500" placeholder="Catatan guru"></div>
+          <button class="btn btn-primary" type="submit">Simpan nilai</button>
+        </form>
+        <p id="grade-message" class="form-message" aria-live="polite"></p>
+        <div class="table-wrap"><table><thead><tr><th>Siswa</th><th>Kelas</th><th>Mata pelajaran</th><th>Penilaian</th><th>Semester</th><th>Nilai</th><th>Terakhir diubah</th></tr></thead><tbody id="teacher-grades"></tbody></table></div>
+      </section>
+
+      <section id="student-panel" class="panel hidden">
+        <div class="section-heading"><div><h2>Nilai saya</h2><p>Data yang ditampilkan hanya nilai yang terhubung dengan akun siswa ini.</p></div><button id="student-export-btn" class="btn btn-outline">Unduh nilai CSV</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Mata pelajaran</th><th>Penilaian</th><th>Semester</th><th>Tahun ajaran</th><th>Nilai</th><th>Catatan</th></tr></thead><tbody id="student-grades"></tbody></table></div>
+      </section>
+
+      <section id="admin-panel" class="panel hidden">
+        <h2>Administrasi</h2>
+        <p>Admin mengelola akun, data siswa, kelas, mata pelajaran, dan penugasan melalui Supabase Dashboard. Menu ini menampilkan ringkasan data.</p>
+        <div id="admin-summary" class="admin-summary"></div>
+        <div class="notice subtle"><strong>Keamanan:</strong> jangan membagikan kunci <code>service_role</code>. Pengelolaan peran dan penugasan dilakukan oleh admin melalui SQL Editor atau proses backend tepercaya.</div>
+      </section>
+      <p id="global-message" class="form-message" aria-live="polite"></p>
+    </section>
+  </main>
+  <footer>© <span id="year"></span> Ruang Nilai Sekolah · Dibuat sebagai starter project</footer>
+  <script src="assets/config.js"></script>
+  <script type="module" src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# Local secrets and exports
+.env
+.env.*
+*.backup
+*.dump
+*.sql.bak
+exports/
+private-data/
+.DS_Store
